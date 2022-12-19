@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 string connection = builder.Configuration.GetConnectionString("UrlShortener");
 builder.Services.AddDbContext<UrlShortenerContext>(options => options.UseNpgsql(connection));
-builder.Services.AddTransient<IUrlService, UrlService>();
+builder.Services.AddSingleton<IUrlService, UrlService>();
 
 var app = builder.Build();
 
