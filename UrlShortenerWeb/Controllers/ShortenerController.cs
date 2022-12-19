@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 using UrlShortener.Services;
+using UrlShortener.Validators;
 
 namespace UrlShortenerWeb.Controllers
 {
@@ -11,11 +12,13 @@ namespace UrlShortenerWeb.Controllers
     {
         private readonly IUrlService _urlService;
         private readonly ILogger<ShortenerController> _logger;
+        private readonly IUrlValidator _urlValidator;
 
-        public ShortenerController(IUrlService urlService, ILogger<ShortenerController> logger)
+        public ShortenerController(IUrlService urlService, ILogger<ShortenerController> logger, IUrlValidator urlValidator)
         {
             _urlService = urlService;
             _logger = logger;
+            _urlValidator = urlValidator;
         }
         [HttpGet("{shrotGuid}")]
         public async Task<IActionResult> Get(string shrotGuid)
@@ -33,6 +36,9 @@ namespace UrlShortenerWeb.Controllers
         public async Task<IActionResult> Post(string targetUrl)
         {
             var decodingUrl = HttpUtility.UrlDecode(targetUrl);
+
+            if (!_urlValidator.Validate(decodingUrl))
+                return BadRequest($"Url {decodingUrl} is not valid");
             var shortGuid = await _urlService.Reduce(decodingUrl);
             var host = Request.Host;
             string controllerName = ControllerContext.RouteData.Values["controller"].ToString();
