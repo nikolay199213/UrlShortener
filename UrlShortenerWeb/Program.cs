@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<UrlShortenerContext>(options => options.UseNpgsql("host=localhost;database=urlshortener;username=postgres;password=postgres"));
+string connection = builder.Configuration.GetConnectionString("UrlShortener");
+builder.Services.AddDbContext<UrlShortenerContext>(options => options.UseNpgsql(connection));
 builder.Services.AddTransient<IUrlService, UrlService>();
 
 var app = builder.Build();
