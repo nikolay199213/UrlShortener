@@ -29,10 +29,9 @@ namespace UrlShortenerWeb.Controllers
                 return Redirect(targetUrl);
             }
         }
-        [HttpPost("{targetUrl}")]
+        [HttpPost]
         public async Task<IActionResult> Post(string targetUrl)
         {
-
             var decodingUrl = HttpUtility.UrlDecode(targetUrl);
             var shortGuid = await _urlService.Reduce(decodingUrl);
             var host = Request.Host;

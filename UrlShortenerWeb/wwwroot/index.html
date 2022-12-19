@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Shortener</title>
+</head>
+<body>
+    <div>
+        <p>
+            Длинная ссылка:<br />
+            <input id="targetUrl" />
+        </p>
+        <p>
+            <button id="reduceBtn">Сократить</button>
+        </p>
+        <p>
+            Короткая ссылка:<br />
+            <a id="shortUrl" />
+        </p>
+    </div>
+    <script>
+        async function reduceUrl(targetUrl) {
+            const url = (
+                '/shortener?' +
+                new URLSearchParams({ targetUrl: targetUrl }).toString()
+            );
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            if (response.ok === true) {
+                const shortUrl = await response.text();
+                var ashortUrl = document.getElementById("shortUrl");
+                ashortUrl.innerText = shortUrl;
+                ashortUrl.href = shortUrl;
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+        document.getElementById("reduceBtn").addEventListener("click", async () => {
+
+            const targetUrl = document.getElementById("targetUrl").value;
+            await reduceUrl(targetUrl);
+        });
+    </script>
+</body>
+</html>
