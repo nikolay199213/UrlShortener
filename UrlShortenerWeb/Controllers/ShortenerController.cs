@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 using UrlShortener.Services;
 
 namespace UrlShortenerWeb.Controllers
@@ -19,8 +20,9 @@ namespace UrlShortenerWeb.Controllers
         [HttpGet("{shrotGuid}")]
         public async Task<IActionResult> Get(string shrotGuid)
         {
+            
             var targetUrl = await _urlService.GetFullUrl(shrotGuid);
-            if(targetUrl == null)
+            if (targetUrl == null)
                 return NotFound();
             else
             {
@@ -30,9 +32,12 @@ namespace UrlShortenerWeb.Controllers
         [HttpPost("{targetUrl}")]
         public async Task<IActionResult> Post(string targetUrl)
         {
-            var shortGuid = await _urlService.Reduce(targetUrl);
+
+            var decodingUrl = HttpUtility.UrlDecode(targetUrl);
+            var shortGuid = await _urlService.Reduce(decodingUrl);
             var host = Request.Host;
-            return Ok($"{host}/{shortGuid}");
+            string controllerName = ControllerContext.RouteData.Values["controller"].ToString();
+            return Ok($"https://{host}/{controllerName}/{shortGuid}");
         }
     }
 }
