@@ -22,7 +22,8 @@ namespace UrlShortener.Services
         public async Task<string> GetFullUrl(string shortGuid)
         {
             var url = await _urlShortenerContext.Urls.FirstOrDefaultAsync(x => x.ShortGuid == shortGuid);
-
+            if (url == null)
+                return "";            
             return url.TargetUrl;
         }
         public async Task<string> Reduce(string targetUrl)

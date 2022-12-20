@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <title>Shortener</title>
+    <style>
+        div {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -15,8 +20,9 @@
         </p>
         <p>
             Короткая ссылка:<br />
-            <a id="shortUrl" />
+            <a id="ashortUrl"></a>
         </p>
+        <iframe id="optin_settings_dialog" style="visibility: hidden"></iframe>
     </div>
     <script>
         async function reduceUrl(targetUrl) {
@@ -32,14 +38,23 @@
             });
             if (response.ok === true) {
                 const shortUrl = await response.text();
-                var ashortUrl = document.getElementById("shortUrl");
+                var ashortUrl = document.getElementById("ashortUrl");
                 ashortUrl.innerText = shortUrl;
                 ashortUrl.href = shortUrl;
+                var barCodePath = getBarCodePath(shortUrl.toString());
+                var frame = document.getElementById("optin_settings_dialog");
+                frame.src = barCodePath;
+                frame.style = "width: 300px; height: 300px; visibility: visible"
             }
             else {
                 const error = await response.json();
                 console.log(error.message);
             }
+        }
+        function getBarCodePath(url) {
+            var shortGuid = url.substr(url.length - 8);
+            var barCode = shortGuid.concat(".html");
+            return barCode;
         }
         document.getElementById("reduceBtn").addEventListener("click", async () => {
 

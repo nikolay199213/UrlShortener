@@ -15,6 +15,7 @@ string connection = builder.Configuration.GetConnectionString("UrlShortener");
 builder.Services.AddDbContext<UrlShortenerContext>(options => options.UseNpgsql(connection));
 builder.Services.AddScoped<IUrlService, UrlService>();
 builder.Services.AddScoped<IUrlValidator, UrlValidator>();
+builder.Services.AddScoped<IBarCodeService, BarCodeService>();
 
 var app = builder.Build();
 
