@@ -53,8 +53,8 @@
         }
         function getBarCodePath(url) {
             var shortGuid = url.substr(url.length - 8);
-            var barCode = shortGuid.concat(".html");
-            return barCode;
+            var barCodePath = shortGuid.concat(".html");
+            return barCodePath;
         }
         document.getElementById("reduceBtn").addEventListener("click", async () => {
 

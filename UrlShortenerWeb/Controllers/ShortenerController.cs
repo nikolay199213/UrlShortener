@@ -29,6 +29,7 @@ namespace UrlShortenerWeb.Controllers
             var targetUrl = await _urlService.GetFullUrl(shrotGuid);
             if (targetUrl == "")
                 return NotFound();
+
             return Redirect(targetUrl);
         }
         [HttpPost]
@@ -38,12 +39,16 @@ namespace UrlShortenerWeb.Controllers
 
             if (!_urlValidator.Validate(decodingUrl))
                 return BadRequest($"Url {decodingUrl} is not valid");
+
             var shortGuid = await _urlService.Reduce(decodingUrl);
+
             var host = Request.Host;
             var controllerName = ControllerContext.RouteData.Values["controller"].ToString();
             var shortUrl = $"https://{host}/{controllerName}/{shortGuid}";
+
             var pathBarCode = $"wwwroot/{shortGuid}.html";
             _barCodeService.SaveBarcode(shortUrl, pathBarCode);
+
             return Ok(shortUrl);
         }
     }
