@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using shortid;
 using shortid.Configuration;
 using System;
@@ -13,6 +14,7 @@ namespace UrlShortener.Services
     public class UrlService : IUrlService
     {
         private readonly UrlShortenerContext _urlShortenerContext;
+        private readonly ILogger<UrlService> _logger;
         private GenerationOptions generationOptions => new GenerationOptions(true, false, 8);
 
         public UrlService(UrlShortenerContext urlShortenerContext)
@@ -30,9 +32,14 @@ namespace UrlShortener.Services
         {
             var shortGuid = ShortId.Generate(generationOptions);
             var newUrl = new Url { TargetUrl = targetUrl, ShortGuid = shortGuid };
-            await _urlShortenerContext.Urls.AddAsync(newUrl);
-            await _urlShortenerContext.SaveChangesAsync();
+            await SaveUrl(newUrl);
             return shortGuid;
+        }
+        public async Task SaveUrl(Url url)
+        {
+            await _urlShortenerContext.Urls.AddAsync(url);
+            await _urlShortenerContext.SaveChangesAsync();
+
         }
     }
 }

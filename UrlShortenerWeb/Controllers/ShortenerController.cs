@@ -28,8 +28,8 @@ namespace UrlShortenerWeb.Controllers
             var targetUrl = await _urlService.GetFullUrl(shrotGuid);
             if (targetUrl == "")
                 return NotFound();
-
-            return Redirect(targetUrl);
+            var uri = new Uri(targetUrl);
+            return Redirect(uri.AbsoluteUri);
         }
         [HttpPost]
         public async Task<IActionResult> Post(string targetUrl)
