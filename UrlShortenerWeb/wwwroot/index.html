@@ -44,7 +44,7 @@
                 var barCodePath = getBarCodePath(shortUrl.toString());
                 var frame = document.getElementById("optin_settings_dialog");
                 frame.src = barCodePath;
-                frame.style = "width: 300px; height: 300px; visibility: visible"
+                frame.style = "width: 300px; height: 300px; visibility: visible; border: none"
             }
             else {
                 const error = await response.json();
@@ -53,7 +53,7 @@
         }
         function getBarCodePath(url) {
             var shortGuid = url.substr(url.length - 8);
-            var barCodePath = shortGuid.concat(".html");
+            var barCodePath = "/StaticFiles/BarCodes/".concat(shortGuid, ".html");
             return barCodePath;
         }
         document.getElementById("reduceBtn").addEventListener("click", async () => {

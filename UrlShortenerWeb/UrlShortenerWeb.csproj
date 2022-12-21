@@ -14,4 +14,8 @@
     <ProjectReference Include="..\UrlShortener\UrlShortener.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MyStaticFiles\BarCodes\" />
+  </ItemGroup>
+
 </Project>

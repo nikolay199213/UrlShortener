@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using UrlShortener.Data;
 using UrlShortener.Services;
 using UrlShortener.Validators;
@@ -33,5 +34,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+		   Path.Combine(builder.Environment.ContentRootPath, "MyStaticFiles")),
+	RequestPath = "/StaticFiles"
+});
 
 app.Run();

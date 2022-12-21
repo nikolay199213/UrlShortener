@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Web;
 using UrlShortener.Services;
 using UrlShortener.Validators;
@@ -46,7 +45,7 @@ namespace UrlShortenerWeb.Controllers
             var controllerName = ControllerContext.RouteData.Values["controller"].ToString();
             var shortUrl = $"https://{host}/{controllerName}/{shortGuid}";
 
-            var pathBarCode = $"wwwroot/{shortGuid}.html";
+            var pathBarCode = $"MyStaticFiles/BarCodes/{shortGuid}.html";
             _barCodeService.SaveBarcode(shortUrl, pathBarCode);
 
             return Ok(shortUrl);
